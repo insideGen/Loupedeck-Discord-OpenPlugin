@@ -5,48 +5,41 @@
     internal static class AudioState
     {
 
-        public static MicrophoneCommand microphoneCommand = null;
-        public static MicrophoneAdjustment microphoneAdjustment = null;
-        public static Boolean microphoneMutedFromHeadphone = false;
+        public static event EventHandler<EventArgs> StateChanged;
 
-        public static HeadphoneCommand headphoneCommand = null;
-        public static HeadphoneAdjustment headphoneAdjustment = null;
+        private static bool _microphoneMutedFromHeadphone = false;
+
+        public static bool MicrophoneMuted { get; private set; } = false;
+        public static bool HeadphoneMuted { get; private set; } = false;
 
         public static void ToggleMicrophone()
         {
-            microphoneCommand.GetPlugin().KeyboardApi.SendShortcut(VirtualKeyCode.F11, ModifierKey.Alt, 3);
-            microphoneCommand.Toggle();
-            microphoneAdjustment.RefreshImage();
-
-            if (microphoneCommand.GetCurrentStateName() == "unmuted" && headphoneCommand.GetCurrentStateName() == "muted")
+            MicrophoneMuted = !MicrophoneMuted;
+            if (MicrophoneMuted == false && HeadphoneMuted == true)
             {
-                headphoneCommand.Toggle();
-                headphoneAdjustment.RefreshImage();
-                microphoneMutedFromHeadphone = false;
+                HeadphoneMuted = false;
+                _microphoneMutedFromHeadphone = false;
             }
+            StateChanged?.Invoke(null, new EventArgs());
         }
 
         public static void ToggleHeadphone()
         {
-            headphoneCommand.GetPlugin().KeyboardApi.SendShortcut(VirtualKeyCode.F12, ModifierKey.Alt, 3);
-            headphoneCommand.Toggle();
-            headphoneAdjustment.RefreshImage();
-
-            if (headphoneCommand.GetCurrentStateName() == "muted" && microphoneCommand.GetCurrentStateName() == "unmuted")
+            HeadphoneMuted = !HeadphoneMuted;
+            if (HeadphoneMuted == true && MicrophoneMuted == false)
             {
-                microphoneCommand.Toggle();
-                microphoneAdjustment.RefreshImage();
-                microphoneMutedFromHeadphone = true;
+                MicrophoneMuted = true;
+                _microphoneMutedFromHeadphone = true;
             }
-            else if (headphoneCommand.GetCurrentStateName() == "unmuted" && microphoneCommand.GetCurrentStateName() == "muted")
+            else if (HeadphoneMuted == false && MicrophoneMuted == true)
             {
-                if (microphoneMutedFromHeadphone)
+                if (_microphoneMutedFromHeadphone)
                 {
-                    microphoneCommand.Toggle();
-                    microphoneAdjustment.RefreshImage();
-                    microphoneMutedFromHeadphone = false;
+                    MicrophoneMuted = false;
+                    _microphoneMutedFromHeadphone = false;
                 }
             }
+            StateChanged?.Invoke(null, new EventArgs());
         }
 
     }

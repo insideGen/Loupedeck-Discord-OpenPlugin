@@ -5,38 +5,35 @@
     public class MicrophoneAdjustment : PluginDynamicAdjustment
     {
 
-        protected const String microphoneUnmutedResourcePath = "microphone-unmuted.png";
-        protected const String microphoneMutedResourcePath = "microphone-muted.png";
+        private const string microphoneUnmutedResourcePath = "microphone-unmuted.png";
+        private const string microphoneMutedResourcePath = "microphone-muted.png";
 
         public MicrophoneAdjustment()
-            : base(displayName: "Display microphone state", description: "Display microphone state.", groupName: "Microphone", hasReset: false)
+            : base(displayName: "Display microphone state", description: "Display microphone state.", groupName: "", hasReset: false)
         {
-            AudioState.microphoneAdjustment = this;
+            AudioState.StateChanged += this.OnStateChanged;
         }
 
-        protected override void ApplyAdjustment(String actionParameter, Int32 diff)
+        private void OnStateChanged(object sender, EventArgs e)
         {
-            this.AdjustmentValueChanged(actionParameter);
-            this.ActionImageChanged(actionParameter);
+            base.ActionImageChanged();
         }
 
-        protected override BitmapImage GetAdjustmentImage(String actionParameter, PluginImageSize imageSize)
+        protected override void ApplyAdjustment(string actionParameter, int diff)
         {
-            if (AudioState.microphoneCommand == null)
+            base.ActionImageChanged(actionParameter);
+        }
+
+        protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
+        {
+            if (AudioState.MicrophoneMuted)
             {
-                return PluginResources.ReadImage(microphoneUnmutedResourcePath);
+                return PluginResources.ReadImage(microphoneMutedResourcePath);
             }
             else
             {
-                return AudioState.microphoneCommand.GetCurrentStateName(actionParameter) == "muted"
-                    ? PluginResources.ReadImage(microphoneMutedResourcePath)
-                    : PluginResources.ReadImage(microphoneUnmutedResourcePath);
+                return PluginResources.ReadImage(microphoneUnmutedResourcePath);
             }
-        }
-
-        public void RefreshImage()
-        {
-            this.ActionImageChanged();
         }
 
     }

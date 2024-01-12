@@ -5,38 +5,35 @@
     public class HeadphoneAdjustment : PluginDynamicAdjustment
     {
 
-        protected const String headphoneUnmutedResourcePath = "headphone-unmuted.png";
-        protected const String headphoneMutedResourcePath = "headphone-muted.png";
+        private const string headphoneUnmutedResourcePath = "headphone-unmuted.png";
+        private const string headphoneMutedResourcePath = "headphone-muted.png";
 
         public HeadphoneAdjustment()
-            : base(displayName: "Display headphone state", description: "Display headphone state.", groupName: "Headphone", hasReset: false)
+            : base(displayName: "Display headphone state", description: "Display headphone state.", groupName: "", hasReset: false)
         {
-            AudioState.headphoneAdjustment = this;
+            AudioState.StateChanged += this.OnStateChanged;
         }
 
-        protected override void ApplyAdjustment(String actionParameter, Int32 diff)
+        private void OnStateChanged(object sender, EventArgs e)
         {
-            this.AdjustmentValueChanged(actionParameter);
-            this.ActionImageChanged(actionParameter);
+            base.ActionImageChanged();
         }
 
-        protected override BitmapImage GetAdjustmentImage(String actionParameter, PluginImageSize imageSize)
+        protected override void ApplyAdjustment(string actionParameter, int diff)
         {
-            if (AudioState.microphoneCommand == null)
+            base.ActionImageChanged(actionParameter);
+        }
+
+        protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
+        {
+            if (AudioState.HeadphoneMuted)
             {
-                return PluginResources.ReadImage(headphoneUnmutedResourcePath);
+                return PluginResources.ReadImage(headphoneMutedResourcePath);
             }
             else
             {
-                return AudioState.headphoneCommand.GetCurrentStateName(actionParameter) == "muted"
-                    ? PluginResources.ReadImage(headphoneMutedResourcePath)
-                    : PluginResources.ReadImage(headphoneUnmutedResourcePath);
+                return PluginResources.ReadImage(headphoneUnmutedResourcePath);
             }
-        }
-
-        public void RefreshImage()
-        {
-            this.ActionImageChanged();
         }
 
     }

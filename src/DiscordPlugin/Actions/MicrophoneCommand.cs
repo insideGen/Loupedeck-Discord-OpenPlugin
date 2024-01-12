@@ -2,47 +2,43 @@
 {
     using System;
 
-    public class MicrophoneCommand : PluginMultistateDynamicCommand
+    public class MicrophoneCommand : ActionEditorCommand
     {
 
-        protected const String microphoneUnmutedResourcePath = "microphone-unmuted.png";
-        protected const String microphoneMutedResourcePath = "microphone-muted.png";
+        private const string microphoneShortcutControlName = "microphoneShortcut";
+        private const string keyboardLayoutIdControlName = "keyboardLayoutId";
 
         public MicrophoneCommand()
-            : base(displayName: "Mute/Unmute microphone", description: "Mute/Unmute microphone (Use the Alt+F11 keyboard shortcut in Discord).", groupName: "Microphone")
+            : base()
         {
-            this.AddState("unmuted", "Unmuted", "Microphone is unmuted");
-            this.AddState("muted", "Muted", "Microphone is muted");
-            this.SetCurrentState(0);
-            AudioState.microphoneCommand = this;
+            base.Name = "MicrophoneActionEditorCommand";
+            base.DisplayName = "Mute/Unmute microphone";
+            base.Description = "Mute/Unmute microphone.";
+            base.ActionEditor.AddControlEx(new ActionEditorKeyboardKey(microphoneShortcutControlName, "Keyboard shortcut to mute microphone").SetRequired());
+            base.ActionEditor.AddControlEx(new ActionEditorSlider(keyboardLayoutIdControlName, "Keyboard layout identifier", "Default value: -1").SetValues(-1, int.MaxValue, -1, 1).SetRequired());
+            AudioState.StateChanged += (object sender, EventArgs e) => base.ActionImageChanged();
         }
 
-        protected override void RunCommand(String actionParameter)
+        protected override bool RunCommand(ActionEditorActionParameters actionParameters)
         {
             AudioState.ToggleMicrophone();
+            string microphoneShortcut = actionParameters.Parameters.GetValue(microphoneShortcutControlName);
+            string keyboardLayoutId = actionParameters.Parameters.GetValue(keyboardLayoutIdControlName);
+            KeyboardKey microphoneKeyboardKey = KeyboardExtensions.GetKeyboardKey(microphoneShortcut.Split("___")[0]);
+            base.Plugin.KeyboardApi.SendShortcut(microphoneKeyboardKey.VirtualKeyCode, microphoneKeyboardKey.ModifierKey, int.Parse(keyboardLayoutId));
+            return base.RunCommand(actionParameters);
         }
 
-        protected override BitmapImage GetCommandImage(String actionParameter, Int32 deviceState, PluginImageSize imageSize)
+        protected override BitmapImage GetCommandImage(ActionEditorActionParameters actionParameters, int imageWidth, int imageHeight)
         {
-            return this.States[deviceState].Name == "muted"
-                ? PluginResources.ReadImage(microphoneMutedResourcePath)
-                : PluginResources.ReadImage(microphoneUnmutedResourcePath);
-        }
-
-        public Plugin GetPlugin()
-        {
-            return this.Plugin;
-        }
-
-        public String GetCurrentStateName(String actionParameter = null)
-        {
-            return this.GetCurrentState(actionParameter).Name;
-        }
-
-        public void Toggle(String actionParameter = null)
-        {
-            this.ToggleCurrentState(actionParameter);
-            this.ActionImageChanged(actionParameter);
+            if (AudioState.MicrophoneMuted)
+            {
+                return PluginResources.ReadImage("microphone-muted.png");
+            }
+            else
+            {
+                return PluginResources.ReadImage("microphone-unmuted.png");
+            }
         }
 
     }

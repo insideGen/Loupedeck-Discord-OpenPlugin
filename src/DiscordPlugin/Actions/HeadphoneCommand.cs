@@ -2,47 +2,43 @@
 {
     using System;
 
-    public class HeadphoneCommand : PluginMultistateDynamicCommand
+    public class HeadphoneCommand : ActionEditorCommand
     {
 
-        protected const String headphoneUnmutedResourcePath = "headphone-unmuted.png";
-        protected const String headphoneMutedResourcePath = "headphone-muted.png";
+        private const string headphoneShortcutControlName = "headphoneShortcut";
+        private const string keyboardLayoutIdControlName = "keyboardLayoutId";
 
         public HeadphoneCommand()
-            : base(displayName: "Mute/Unmute headphone", description: "Mute/Unmute headphone (Use the Alt+F12 keyboard shortcut in Discord).", groupName: "Headphone")
+            : base()
         {
-            this.AddState("unmuted", "Unmuted", "Headphone is unmuted");
-            this.AddState("muted", "Muted", "Headphone is muted");
-            this.SetCurrentState(0);
-            AudioState.headphoneCommand = this;
+            base.Name = "HeadphoneActionEditorCommand";
+            base.DisplayName = "Mute/Unmute headphone";
+            base.Description = "Mute/Unmute headphone.";
+            base.ActionEditor.AddControlEx(new ActionEditorKeyboardKey(headphoneShortcutControlName, "Keyboard shortcut to mute headphone").SetRequired());
+            base.ActionEditor.AddControlEx(new ActionEditorSlider(keyboardLayoutIdControlName, "Keyboard layout identifier", "Default value: -1").SetValues(-1, int.MaxValue, -1, 1).SetRequired());
+            AudioState.StateChanged += (object sender, EventArgs e) => base.ActionImageChanged();
         }
 
-        protected override void RunCommand(String actionParameter)
+        protected override bool RunCommand(ActionEditorActionParameters actionParameters)
         {
             AudioState.ToggleHeadphone();
+            string headphoneShortcut = actionParameters.Parameters.GetValue(headphoneShortcutControlName);
+            string keyboardLayoutId = actionParameters.Parameters.GetValue(keyboardLayoutIdControlName);
+            KeyboardKey headphoneKeyboardKey = KeyboardExtensions.GetKeyboardKey(headphoneShortcut.Split("___")[0]);
+            base.Plugin.KeyboardApi.SendShortcut(headphoneKeyboardKey.VirtualKeyCode, headphoneKeyboardKey.ModifierKey, int.Parse(keyboardLayoutId));
+            return base.RunCommand(actionParameters);
         }
 
-        protected override BitmapImage GetCommandImage(String actionParameter, Int32 deviceState, PluginImageSize imageSize)
+        protected override BitmapImage GetCommandImage(ActionEditorActionParameters actionParameters, int imageWidth, int imageHeight)
         {
-            return this.States[deviceState].Name == "muted"
-                ? PluginResources.ReadImage(headphoneMutedResourcePath)
-                : PluginResources.ReadImage(headphoneUnmutedResourcePath);
-        }
-
-        public Plugin GetPlugin()
-        {
-            return this.Plugin;
-        }
-
-        public String GetCurrentStateName(String actionParameter = null)
-        {
-            return this.GetCurrentState(actionParameter).Name;
-        }
-
-        public void Toggle(String actionParameter = null)
-        {
-            this.ToggleCurrentState(actionParameter);
-            this.ActionImageChanged(actionParameter);
+            if (AudioState.HeadphoneMuted)
+            {
+                return PluginResources.ReadImage("headphone-muted.png");
+            }
+            else
+            {
+                return PluginResources.ReadImage("headphone-unmuted.png");
+            }
         }
 
     }
