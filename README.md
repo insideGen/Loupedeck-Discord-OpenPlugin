@@ -8,7 +8,7 @@ The logic for changing state between microphone and headset follows the same log
 Discord no longer offers an API (SDK deprecated, RPC in beta), so this project offers an intermediate solution.
 
 ## Installation
-- Download the latest `.lplug4` asset [here](https://github.com/insideGen/Loupedeck-Discord-OpenPlugin/releases);
+- Download the [latest release](https://github.com/insideGen/Loupedeck-Discord-OpenPlugin/releases) of the `.lplug4` asset;
 - Double-click on the file and follow the instructions in the Loupedeck application.
 
 Only available for Windows, tested with Loupedeck Live S.
@@ -45,3 +45,8 @@ Displays headphone mute state and toggles it when pressed.
 | ------------------------------------ | ----------- | ------------------- |
 | Keyboard shortcut to mute headphone  | KeyboardKey |                     |
 | Keyboard layout identifier           | Number      | -1 is default value |
+
+## License
+
+This code is under MIT license except Discord logo, icon and wordmark.
+For more information about Discord branding, visit [https://discord.com/branding](https://discord.com/branding).
