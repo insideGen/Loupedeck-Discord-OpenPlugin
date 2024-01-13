@@ -62,10 +62,10 @@ minimumLoupedeckVersion: 5.7
 
 # Name of the license that the plugin is licensed under. Select the one that you prefer.
 # NOTE: GPL license is not compatible with Loupedeck Marketplace.
-license: MIT
+license: MIT except Discord logo, icon and wordmark
 
 # URL of the plugin license.
-licenseUrl: https://opensource.org/licenses/MIT
+licenseUrl: https://github.com/insideGen/Loupedeck-Discord-OpenPlugin/blob/main/LICENSE
 
 # URL of the support page where the users can send improvement suggestions and report bugs.
 # The URL is shown in Loupedeck Marketplace. The page can be for example a GitHub issues page.

@@ -5,9 +5,6 @@
     public class MicrophoneAdjustment : PluginDynamicAdjustment
     {
 
-        private const string microphoneUnmutedResourcePath = "microphone-unmuted.png";
-        private const string microphoneMutedResourcePath = "microphone-muted.png";
-
         public MicrophoneAdjustment()
             : base(displayName: "Display microphone state", description: "Display microphone state.", groupName: "", hasReset: false)
         {
@@ -28,11 +25,11 @@
         {
             if (AudioState.MicrophoneMuted)
             {
-                return PluginResources.ReadImage(microphoneMutedResourcePath);
+                return PluginResources.ReadImage("microphone-muted.png");
             }
             else
             {
-                return PluginResources.ReadImage(microphoneUnmutedResourcePath);
+                return PluginResources.ReadImage("microphone-unmuted.png");
             }
         }
 

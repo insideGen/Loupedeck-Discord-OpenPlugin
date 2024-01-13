@@ -7,36 +7,36 @@
 
         public static event EventHandler<EventArgs> StateChanged;
 
-        private static bool _microphoneMutedFromHeadphone = false;
+        private static bool _microphoneMutedFromHeadphones = false;
 
         public static bool MicrophoneMuted { get; private set; } = false;
-        public static bool HeadphoneMuted { get; private set; } = false;
+        public static bool HeadphonesMuted { get; private set; } = false;
 
         public static void ToggleMicrophone()
         {
             MicrophoneMuted = !MicrophoneMuted;
-            if (MicrophoneMuted == false && HeadphoneMuted == true)
+            if (MicrophoneMuted == false && HeadphonesMuted == true)
             {
-                HeadphoneMuted = false;
-                _microphoneMutedFromHeadphone = false;
+                HeadphonesMuted = false;
+                _microphoneMutedFromHeadphones = false;
             }
             StateChanged?.Invoke(null, new EventArgs());
         }
 
-        public static void ToggleHeadphone()
+        public static void ToggleHeadphones()
         {
-            HeadphoneMuted = !HeadphoneMuted;
-            if (HeadphoneMuted == true && MicrophoneMuted == false)
+            HeadphonesMuted = !HeadphonesMuted;
+            if (HeadphonesMuted == true && MicrophoneMuted == false)
             {
                 MicrophoneMuted = true;
-                _microphoneMutedFromHeadphone = true;
+                _microphoneMutedFromHeadphones = true;
             }
-            else if (HeadphoneMuted == false && MicrophoneMuted == true)
+            else if (HeadphonesMuted == false && MicrophoneMuted == true)
             {
-                if (_microphoneMutedFromHeadphone)
+                if (_microphoneMutedFromHeadphones)
                 {
                     MicrophoneMuted = false;
-                    _microphoneMutedFromHeadphone = false;
+                    _microphoneMutedFromHeadphones = false;
                 }
             }
             StateChanged?.Invoke(null, new EventArgs());

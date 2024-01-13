@@ -2,14 +2,11 @@
 {
     using System;
 
-    public class HeadphoneAdjustment : PluginDynamicAdjustment
+    public class HeadphonesAdjustment : PluginDynamicAdjustment
     {
 
-        private const string headphoneUnmutedResourcePath = "headphone-unmuted.png";
-        private const string headphoneMutedResourcePath = "headphone-muted.png";
-
-        public HeadphoneAdjustment()
-            : base(displayName: "Display headphone state", description: "Display headphone state.", groupName: "", hasReset: false)
+        public HeadphonesAdjustment()
+            : base(displayName: "Display headphones state", description: "Display headphones state.", groupName: "", hasReset: false)
         {
             AudioState.StateChanged += this.OnStateChanged;
         }
@@ -26,13 +23,13 @@
 
         protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
         {
-            if (AudioState.HeadphoneMuted)
+            if (AudioState.HeadphonesMuted)
             {
-                return PluginResources.ReadImage(headphoneMutedResourcePath);
+                return PluginResources.ReadImage("headphones-muted.png");
             }
             else
             {
-                return PluginResources.ReadImage(headphoneUnmutedResourcePath);
+                return PluginResources.ReadImage("headphones-unmuted.png");
             }
         }
 

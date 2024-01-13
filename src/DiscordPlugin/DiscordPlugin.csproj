@@ -53,8 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\HeadphoneCommand.cs" />
-    <Compile Include="Actions\HeadphoneAdjustment.cs" />
+    <Compile Include="Actions\HeadphonesCommand.cs" />
+    <Compile Include="Actions\HeadphonesAdjustment.cs" />
     <Compile Include="Actions\MicrophoneCommand.cs" />
     <Compile Include="Actions\MicrophoneAdjustment.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -72,8 +72,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icons\headphone-muted.png" />
-    <EmbeddedResource Include="Icons\headphone-unmuted.png" />
+    <EmbeddedResource Include="Icons\headphones-muted.png" />
+    <EmbeddedResource Include="Icons\headphones-unmuted.png" />
     <EmbeddedResource Include="Icons\microphone-muted.png" />
     <EmbeddedResource Include="Icons\microphone-unmuted.png" />
     <EmbeddedResource Include="metadata\Icon256x256.png" />
