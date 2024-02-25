@@ -4,9 +4,7 @@
 
     public class HeadphonesAdjustment : PluginDynamicAdjustment
     {
-
-        public HeadphonesAdjustment()
-            : base(displayName: "Display headphones state", description: "Display headphones state.", groupName: "", hasReset: false)
+        public HeadphonesAdjustment() : base(displayName: "Display headphones state", description: "Display headphones state.", groupName: "", hasReset: false)
         {
             AudioState.StateChanged += this.OnStateChanged;
         }
@@ -32,7 +30,5 @@
                 return PluginResources.ReadImage("headphones-unmuted.png");
             }
         }
-
     }
-
 }

@@ -4,12 +4,10 @@
 
     public class MicrophoneCommand : ActionEditorCommand
     {
-
         private const string microphoneShortcutControlName = "microphoneShortcut";
         private const string keyboardLayoutIdControlName = "keyboardLayoutId";
 
-        public MicrophoneCommand()
-            : base()
+        public MicrophoneCommand() : base()
         {
             base.Name = "MicrophoneActionEditorCommand";
             base.DisplayName = "Mute/Unmute microphone";
@@ -40,7 +38,5 @@
                 return PluginResources.ReadImage("microphone-unmuted.png");
             }
         }
-
     }
-
 }

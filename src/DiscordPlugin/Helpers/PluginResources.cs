@@ -44,7 +44,7 @@ namespace Loupedeck.DiscordPlugin
 
         // Reads content of the specified binary file, and returns the file content as bytes.
         // Throws `FileNotFoundException` if the resource file is not found.
-        public static Byte[] ReadBinaryFile(string resourceName) => PluginResources._assembly.ReadBinaryFile(PluginResources.FindFile(resourceName));
+        public static byte[] ReadBinaryFile(string resourceName) => PluginResources._assembly.ReadBinaryFile(PluginResources.FindFile(resourceName));
 
         // Reads content of the specified image file, and returns the file content as a bitmap image.
         // Throws `FileNotFoundException` if the resource file is not found.
@@ -52,7 +52,6 @@ namespace Loupedeck.DiscordPlugin
 
         // Extracts the specified resource file to the given file path in the file system.
         // Throws `FileNotFoundException` if the resource file is not found, or a system exception if the output file cannot be written.
-        public static void ExtractFile(string resourceName, string filePathName)
-            => PluginResources._assembly.ExtractFile(PluginResources.FindFile(resourceName), filePathName);
+        public static void ExtractFile(string resourceName, string filePathName) => PluginResources._assembly.ExtractFile(PluginResources.FindFile(resourceName), filePathName);
     }
 }

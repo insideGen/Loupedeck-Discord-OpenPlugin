@@ -4,7 +4,6 @@
 
     internal static class AudioState
     {
-
         public static event EventHandler<EventArgs> StateChanged;
 
         private static bool _microphoneMutedFromHeadphones = false;
@@ -41,7 +40,5 @@
             }
             StateChanged?.Invoke(null, new EventArgs());
         }
-
     }
-
 }

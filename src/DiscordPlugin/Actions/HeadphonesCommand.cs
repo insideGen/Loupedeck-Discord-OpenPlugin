@@ -4,12 +4,10 @@
 
     public class HeadphonesCommand : ActionEditorCommand
     {
-
         private const string headphonesShortcutControlName = "headphonesShortcut";
         private const string keyboardLayoutIdControlName = "keyboardLayoutId";
 
-        public HeadphonesCommand()
-            : base()
+        public HeadphonesCommand() : base()
         {
             base.Name = "HeadphonesActionEditorCommand";
             base.DisplayName = "Mute/Unmute headphones";
@@ -40,7 +38,5 @@
                 return PluginResources.ReadImage("headphones-unmuted.png");
             }
         }
-
     }
-
 }

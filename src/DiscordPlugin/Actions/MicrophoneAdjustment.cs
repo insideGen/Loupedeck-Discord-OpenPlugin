@@ -4,9 +4,7 @@
 
     public class MicrophoneAdjustment : PluginDynamicAdjustment
     {
-
-        public MicrophoneAdjustment()
-            : base(displayName: "Display microphone state", description: "Display microphone state.", groupName: "", hasReset: false)
+        public MicrophoneAdjustment() : base(displayName: "Display microphone state", description: "Display microphone state.", groupName: "", hasReset: false)
         {
             AudioState.StateChanged += this.OnStateChanged;
         }
@@ -32,7 +30,5 @@
                 return PluginResources.ReadImage("microphone-unmuted.png");
             }
         }
-
     }
-
 }
